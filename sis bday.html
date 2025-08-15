@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎀 Happy Birthday SISSYY 🎀</title>
+<style>
+    body {
+        background: linear-gradient(to bottom right, #ffe6f0, #fff0f5);
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        text-align: center;
+        color: #ff69b4;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    h1 {
+        font-size: 3em;
+        margin-top: 50px;
+    }
+    p {
+        font-size: 1.5em;
+        max-width: 700px;
+        margin: 20px auto;
+        white-space: pre-wrap;
+    }
+    .bow {
+        font-size: 2em;
+    }
+    .footer {
+        position: fixed;
+        bottom: 10px;
+        right: 20px;
+        font-size: 0.9em;
+        color: #ff6f91;
+        font-style: italic;
+    }
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+</style>
+</head>
+<body>
+    <h1 id="title"></h1>
+    <p id="message"></p>
+    <p class="bow" id="bows"></p>
+    <div class="footer">Made with love by UNNNNIIIII ❤️</div>
+    <canvas id="confetti"></canvas>
+    <canvas id="hearts"></canvas>
+
+<script>
+// Typewriter effect
+const titleText = "🎀 Happy Birthday Pookie 🎀";
+const messageText = "Shh Samm you aint readin it hehehehe ,how's it tho 👀";
+const bowsText = "🎀 🎀 🎀";
+
+function typeWriter(elementId, text, delay, callback) {
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            document.getElementById(elementId).textContent += text.charAt(i);
+            i++;
+            setTimeout(typing, delay);
+        } else if (callback) {
+            callback();
+        }
+    }
+    typing();
+}
+
+typeWriter("title", titleText, 80, () => {
+    typeWriter("message", messageText, 50, () => {
+        typeWriter("bows", bowsText, 100);
+    });
+});
+
+// 🎉 Confetti
+const confettiCanvas = document.getElementById("confetti");
+const ctxConfetti = confettiCanvas.getContext("2d");
+confettiCanvas.width = window.innerWidth;
+confettiCanvas.height = window.innerHeight;
+
+const confettiPieces = [];
+for (let i = 0; i < 150; i++) {
+    confettiPieces.push({
+        x: Math.random() * confettiCanvas.width,
+        y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 10 + 10,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+        tilt: Math.random() * 10 - 10
+    });
+}
+
+function drawConfetti() {
+    ctxConfetti.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    confettiPieces.forEach(p => {
+        ctxConfetti.beginPath();
+        ctxConfetti.lineWidth = p.r / 2;
+        ctxConfetti.strokeStyle = p.color;
+        ctxConfetti.moveTo(p.x + p.tilt + p.r / 4, p.y);
+        ctxConfetti.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 4);
+        ctxConfetti.stroke();
+    });
+    updateConfetti();
+}
+
+function updateConfetti() {
+    confettiPieces.forEach(p => {
+        p.y += Math.cos(p.d) + 1 + p.r / 2;
+        p.x += Math.sin(0.5) * 2;
+        if (p.y > confettiCanvas.height) {
+            p.x = Math.random() * confettiCanvas.width;
+            p.y = -10;
+        }
+    });
+}
+setInterval(drawConfetti, 20);
+
+// 💖 Hearts
+const heartsCanvas = document.getElementById("hearts");
+const ctxHearts = heartsCanvas.getContext("2d");
+heartsCanvas.width = window.innerWidth;
+heartsCanvas.height = window.innerHeight;
+
+const hearts = [];
+for (let i = 0; i < 20; i++) {
+    hearts.push({
+        x: Math.random() * heartsCanvas.width,
+        y: Math.random() * heartsCanvas.height,
+        size: Math.random() * 20 + 10,
+        speed: Math.random() * 1 + 0.5,
+        opacity: Math.random() * 0.5 + 0.5
+    });
+}
+
+function drawHearts() {
+    ctxHearts.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
+    hearts.forEach(h => {
+        ctxHearts.globalAlpha = h.opacity;
+        ctxHearts.fillStyle = "#ff4d88";
+        ctxHearts.beginPath();
+        let topCurveHeight = h.size * 0.3;
+        ctxHearts.moveTo(h.x, h.y + topCurveHeight);
+        ctxHearts.bezierCurveTo(h.x, h.y, h.x - h.size / 2, h.y, h.x - h.size / 2, h.y + topCurveHeight);
+        ctxHearts.bezierCurveTo(h.x - h.size / 2, h.y + (h.size + topCurveHeight) / 2, h.x, h.y + (h.size + topCurveHeight) / 2, h.x, h.y + h.size);
+        ctxHearts.bezierCurveTo(h.x, h.y + (h.size + topCurveHeight) / 2, h.x + h.size / 2, h.y + (h.size + topCurveHeight) / 2, h.x + h.size / 2, h.y + topCurveHeight);
+        ctxHearts.bezierCurveTo(h.x + h.size / 2, h.y, h.x, h.y, h.x, h.y + topCurveHeight);
+        ctxHearts.fill();
+        h.y -= h.speed;
+        if (h.y < -h.size) {
+            h.x = Math.random() * heartsCanvas.width;
+            h.y = heartsCanvas.height + h.size;
+        }
+    });
+}
+setInterval(drawHearts, 20);
+</script>
+</body>
+</html>
